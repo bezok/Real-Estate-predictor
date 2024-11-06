@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Prediction - Details</title>
+    <link rel="stylesheet" href="{% static 'details.css' %}">
+</head>
+<body>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading, please wait...</p>
+    </div>
+
+    <div class="container details">
+        <h2>Enter Property Details</h2>
+        <form action="{% url 'select_details' %}" method="POST">
+            {% csrf_token %}
+
+            <label for="bhk">Number of BHK:</label>
+            <select id="bhk" name="bhk" required>
+                <option value="">Select BHK</option>
+                <option value="1">1 BHK</option>
+                <option value="2">2 BHK</option>
+                <option value="3">3 BHK</option>
+                <option value="4">4 BHK</option>
+            </select>
+
+            <label for="furnishing">Furnishing:</label>
+            <div class="furnishing-options">
+                <label class="furnishing-item">
+                    <input type="radio" name="furnishing" value="Furnished" required>
+                    <img src="{% static 'furnished.jpg' %}" alt="Furnished">
+                    <span class="furnishing-text">Furnished</span>
+                </label>
+                <label class="furnishing-item">
+                    <input type="radio" name="furnishing" value="Unfurnished" required>
+                    <img src="{% static 'unfurnished.jpg' %}" alt="Unfurnished">
+                    <span class="furnishing-text">Unfurnished</span>
+                </label>
+            </div>
+
+            <label for="property-type">Property Type:</label>
+            <select id="property-type" name="property_type" required>
+                <option value="">Select Property Type</option>
+                <option value="Apartment">Flat</option>
+                <option value="Villa">Villa</option>
+                <option value="Independent House">House</option>
+            </select>
+
+            <input type="submit" class="button1" value="Predict Price">
+        </form>
+    </div>
+
+    <script src="{% static 'details.js' %}"></script>
+</body>
+</html>

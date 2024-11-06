@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Prediction - Welcome</title>
+    <link rel="stylesheet" href="{% static 'welcome.css' %}">
+</head>
+<body>
+    <div class="container welcome">
+        
+        <form action="{% url 'select_city' %}" method="POST">
+            {% csrf_token %}
+
+        <h4>Real Estate price prediction</h4>
+        <p>Select your city to begin</p>
+
+        <input type="text" id="city-search" placeholder="Search city..." oninput="filterCities()">
+        <div id="city-list"></div>
+        <input type="hidden" name="city" id="selected-city">
+        
+        <input type="submit" class="next-button" value="Next">
+        </form>
+    </div>
+
+    <script src="{% static 'cities.js' %}"></script>
+    <script src="{% static 'welcome.js' %}"></script>
+</body>
+</html>

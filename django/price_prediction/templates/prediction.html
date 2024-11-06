@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Prediction - Result</title>
+    <link rel="stylesheet" href="{% static 'prediction.css' %}">
+</head>
+<body>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Calculating the estimated price, please wait...</p>
+    </div>
+
+    <div class="container result">
+        <h1>Estimated Property Price</h1>
+        <div id="result" class="result-display"><h2>Price: ₹ {{predicted_price}}</h2></div>
+        <p class="suggestion">*Based on current data trends, may be subjected to <span id="suggestion-type">slight variation</span>.</p>
+        
+        
+        
+    </div>
+
+    <script src="{% static 'prediction.js' %}"></script>
+</body>
+</html>
