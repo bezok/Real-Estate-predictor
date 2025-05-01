@@ -1,0 +1,125 @@
+:root {
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --text-color: #1f2937;
+    --gray-light: #f3f4f6;
+    --gray-dark: #4b5563;
+    --gray-medium: #9ca3af;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--gray-light);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    margin-left: 1.5rem;
+    font-weight: 500;
+}
+
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+.buy-container {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+.map-container {
+    width: 70%;
+    height: 100%;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.property-list-container {
+    width: 60%;
+    padding: 1rem;
+    background: rgb(255, 255, 255);
+    overflow-y: auto;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--gray-medium);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.property-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    display: flex;
+}
+
+.property-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.property-details {
+    padding: 1rem;
+    flex: 1;
+}
+
+.property-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.property-location, .property-price {
+    color: rgb(0, 0, 0);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+.btn-primary1 {
+    background-color: rgb(245, 28, 28);
+    color: rgb(246, 246, 246);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-primary1:hover {
+    background-color: rgb(197, 31, 31);
+}
+

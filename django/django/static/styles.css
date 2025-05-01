@@ -1,0 +1,93 @@
+@import 'base.css';
+@import 'components/auth-container.css';
+@import 'components/forms.css';
+@import 'components/buttons.css';
+@import 'components/links.css';
+@import 'auth.css';
+
+body {
+    background-image: url("bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container for forms */
+.auth-container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
+/* Input Fields */
+input[type="text"], input[type="email"], input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Buttons */
+button, input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Form-specific Styles */
+form {
+    text-align: left;
+}
+
+label {
+    font-size: 1rem;
+    color: #495057;
+}
+
+/* Additional Text Links */
+.text-center {
+    text-align: center;
+    margin-top: 10px;
+}

@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Map Search</title>
+
+    <!-- Load CSS -->
+    <link rel="stylesheet" href="{% static 'map.css' %}">
+</head>
+<body>
+
+    <h2>Search for a Location on Google Maps</h2>
+
+    <!-- Input for location name -->
+    <div class="controls">
+        <label>Location: <input type="text" id="location" placeholder="Enter a place (e.g., Trivandrum)"></label>
+        <button onclick="searchLocation()">Search</button>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+    <!-- Load JavaScript -->
+    <script>
+        var lat = {{ location.lat }};
+        var lng = {{ location.lng }};
+    </script>
+    <script src="{% static 'map.js' %}"></script>
+    
+    <!-- Google Maps API (Ensure key is correct) -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8K635YsOV7QVRLIYHK7yj67DQE-fWuVM&callback=initMap"></script>
+
+</body>
+</html>
