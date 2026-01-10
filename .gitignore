@@ -1,0 +1,146 @@
+# -----------------------------
+# Python / Django
+# -----------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+
+# pyenv
+.python-version
+
+# Installer / pip
+pip-log.txt
+pip-delete-this-directory.txt
+pip-selfcheck.json
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+.tox/
+.nox/
+.pytest_cache/
+.nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+
+
+# Scrapy
+.scrapy
+
+# Sphinx
+docs/_build/
+
+# -----------------------------
+# Node / frontend
+# -----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+/dist/
+/build/
+/.vite/
+
+# env files
+.env
+.env.*
+
+# -----------------------------
+# IDEs / editors
+# -----------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Editor backup files
+*~
+*.swp
+*.swo
+
+# -----------------------------
+# OS files
+# -----------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# -----------------------------
+# Logs and databases
+# -----------------------------
+logs/
+*.log
+*.sql
+*.sqlite3
+*.sqlite
+
+# -----------------------------
+# Build artifacts
+# -----------------------------
+*.pyc
+*.pyo
+*.pyd
+*.class
+*.dll
+*.exe
+*.out
+
+# -----------------------------
+# Packaging
+# -----------------------------
+*.egg
+*.egg-info/
+.installed.cfg
+*.whl
+.eggs/
+
+# -----------------------------
+# Misc
+# -----------------------------
+*.manifest
+*.spec
+coverage/
+
+# Uncomment these if you want to ignore all CSV or large data files by default
+# *.csv
+# data/
+
+# End of file
