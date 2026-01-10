@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Real Estate Price Prediction</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box welcome-box">
+            <h1>Welcome</h1>
+            <p class="welcome-text">Discover accurate real estate price predictions with our advanced AI-powered platform.</p>
+            <div class="auth-buttons">
+                <a href="/login" class="btn-primary">Login</a>
+                <a href="/register" class="btn-secondary">Register</a>
+            </div>
+            <div class="auth-features">
+                <div class="feature">
+                    <span class="feature-icon">🏠</span>
+                    <p>Accurate Price Predictions</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📊</span>
+                    <p>Market Analysis</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📱</span>
+                    <p>Mobile Friendly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
