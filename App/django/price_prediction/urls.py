@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/properties/', views.property_list, name='property_list'),
     path('api/properties/search/', views.property_search, name='property_search'),
     path('api/properties/create/', views.create_property, name='create_property'),
+    path('api/properties/<int:id>/', views.property_detail, name='property_detail'),
      path('api/cities/', views.cities_list, name='cities_list'),
 ]
 

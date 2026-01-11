@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function Properties() {
   const [list, setList] = useState([]);
@@ -27,27 +34,30 @@ export default function Properties() {
   }
 
   return (
-    <div style={{ maxWidth: 960, margin: '1rem auto' }}>
-      <h2>Properties for Sale</h2>
-      <div style={{ marginBottom: 12 }}>
-        <form onSubmit={search}>
-          <input placeholder="Search by location or name" value={q} onChange={e=>setQ(e.target.value)} />
-          <button type="submit">Search</button>
-          <button type="button" onClick={load} style={{ marginLeft: 8 }}>Refresh</button>
-        </form>
-      </div>
+    <Box sx={{ maxWidth: 960, margin: '1rem auto' }}>
+      <Typography variant="h5" gutterBottom>Properties for Sale</Typography>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
-        {list.length === 0 && <div>No properties available.</div>}
+      <Box component="form" onSubmit={search} sx={{ display: 'flex', gap: 1, mb: 2 }}>
+        <TextField placeholder="Search by location or name" value={q} onChange={e=>setQ(e.target.value)} fullWidth />
+        <Button type="submit" variant="contained">Search</Button>
+        <Button type="button" onClick={load}>Refresh</Button>
+      </Box>
+
+      <Grid container spacing={2}>
+        {list.length === 0 && <Grid item xs={12}><Typography>No properties available.</Typography></Grid>}
         {list.map(p => (
-          <div key={p.id} style={{ border: '1px solid #ddd', padding: 12 }}>
-            <h3>{p.title}</h3>
-            <p>{p.location}</p>
-            <p>₹{p.price} Lakhs</p>
-            <button onClick={() => nav(`/details`, { state: { property: p } })}>View Details</button>
-          </div>
+          <Grid item key={p.id} xs={12} sm={6} md={4}>
+            <Card variant="outlined">
+              <CardContent>
+                <Typography variant="h6">{p.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{p.location}</Typography>
+                <Typography sx={{ mt: 1 }}>₹{p.price} Lakhs</Typography>
+                <Button sx={{ mt: 2 }} variant="contained" onClick={() => nav(`/properties/${p.id}`)}>View Details</Button>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 }

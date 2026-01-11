@@ -464,6 +464,24 @@ def property_search(request):
         })
     return JsonResponse({'results': data})
 
+
+@require_http_methods(["GET"])
+def property_detail(request, id):
+    try:
+        p = Property.objects.get(id=id)
+        data = {
+            'id': p.id,
+            'title': p.title,
+            'description': p.description,
+            'price': float(p.price),
+            'location': p.location,
+            'is_for_sale': p.is_for_sale,
+            'created_at': p.created_at.isoformat(),
+        }
+        return JsonResponse(data)
+    except Property.DoesNotExist:
+        return JsonResponse({'error': 'Not found'}, status=404)
+
 @require_http_methods(["POST"])
 @ensure_csrf_cookie
 def create_property(request):
