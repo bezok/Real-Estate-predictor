@@ -8,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import PropertyMap from '../components/PropertyMap';
 
 export default function Properties() {
   const [list, setList] = useState([]);
@@ -34,29 +35,73 @@ export default function Properties() {
   }
 
   return (
-    <Box sx={{ maxWidth: 960, margin: '1rem auto' }}>
-      <Typography variant="h5" gutterBottom>Properties for Sale</Typography>
+    <Box sx={{ height: 'calc(100vh - 64px)' }}>
+      <Grid container sx={{ height: '100%' }}>
 
-      <Box component="form" onSubmit={search} sx={{ display: 'flex', gap: 1, mb: 2 }}>
-        <TextField placeholder="Search by location or name" value={q} onChange={e=>setQ(e.target.value)} fullWidth />
-        <Button type="submit" variant="contained">Search</Button>
-        <Button type="button" onClick={load}>Refresh</Button>
-      </Box>
+        {/* LEFT: MAP */}
+        <Grid item xs={12} md={7} sx={{ height: '100%' }}>
+          <PropertyMap properties={list} />
+        </Grid>
 
-      <Grid container spacing={2}>
-        {list.length === 0 && <Grid item xs={12}><Typography>No properties available.</Typography></Grid>}
-        {list.map(p => (
-          <Grid item key={p.id} xs={12} sm={6} md={4}>
-            <Card variant="outlined">
-              <CardContent>
-                <Typography variant="h6">{p.title}</Typography>
-                <Typography variant="body2" color="text.secondary">{p.location}</Typography>
-                <Typography sx={{ mt: 1 }}>₹{p.price} Lakhs</Typography>
-                <Button sx={{ mt: 2 }} variant="contained" onClick={() => nav(`/properties/${p.id}`)}>View Details</Button>
-              </CardContent>
-            </Card>
+        {/* RIGHT: LIST */}
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{
+            height: '100%',
+            overflowY: 'auto',
+            p: 2
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Properties for Sale
+          </Typography>
+
+          <Box component="form" onSubmit={search} sx={{ display: 'flex', gap: 1, mb: 2 }}>
+            <TextField
+              placeholder="Search by location or name"
+              value={q}
+              onChange={e => setQ(e.target.value)}
+              fullWidth
+            />
+            <Button type="submit" variant="contained">Search</Button>
+            <Button type="button" onClick={load}>Refresh</Button>
+          </Box>
+
+          <Grid container spacing={2}>
+            {list.length === 0 && (
+              <Grid item xs={12}>
+                <Typography>No properties available.</Typography>
+              </Grid>
+            )}
+
+            {list.map(p => (
+              <Grid item key={p.id} xs={12} sm={6}>
+                {/* YOUR EXISTING CARD – untouched */}
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6">{p.title}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {p.location}
+                    </Typography>
+                    <Typography sx={{ mt: 1 }}>
+                      ₹{p.price} Lakhs
+                    </Typography>
+                    <Button
+                      sx={{ mt: 2 }}
+                      variant="contained"
+                      onClick={() => nav(`/properties/${p.id}`)}
+                    >
+                      View Details
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
+        </Grid>
+
       </Grid>
     </Box>
   );
