@@ -493,6 +493,11 @@ def create_property(request):
         location = data.get('location', '')
         is_for_sale = data.get('is_for_sale', True)
 
+        # Optional fields sent from frontend
+        furnishing = data.get('furnishing', '')
+        bhk = data.get('bhk', '')
+        property_type = data.get('property_type', '')
+
         prop = Property.objects.create(
             title=title,
             description=description,
@@ -500,7 +505,59 @@ def create_property(request):
             location=location,
             is_for_sale=is_for_sale
         )
-        return JsonResponse({'success': True, 'id': prop.id})
+
+        # Try to append to CSV dataset in the required format
+        appended_row = None
+        try:
+            csv_path = os.path.join(settings.BASE_DIR, 'static', 'preprocessed_real_estate_data.csv')
+            # Prepare values, sanitize commas in location
+            loc_safe = str(location).replace(',', '')
+            furn = furnishing if furnishing else ''
+            bhk_val = str(int(bhk)) if bhk != '' else ''
+            ptype = property_type if property_type else ''
+            price_lac = ''
+            try:
+                price_lac = str(float(price))
+            except Exception:
+                price_lac = str(price)
+
+            row = [loc_safe, furn, bhk_val, ptype, price_lac]
+
+            import csv
+            with open(csv_path, 'a', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow(row)
+
+            appended_row = ','.join(row)
+            print(f"Appended to dataset: {appended_row}")
+        except Exception as exc:
+            # Do not fail the request if CSV append fails
+            print('Failed to append to CSV:', exc)
+
+        # Also attempt to update cities.js (so new city shows up in selectors)
+        try:
+            file_path = os.path.join(settings.BASE_DIR, "static", "cities.js")
+            with open(file_path, "r") as file:
+                content = file.read()
+            match = re.search(r'const cities = (\[.*?\]);', content, re.DOTALL)
+            if match:
+                cities_list_str = match.group(1)
+                cities_list = json.loads(cities_list_str.replace("'", '"'))
+                if location and location not in cities_list:
+                    cities_list.append(location)
+                updated_content = re.sub(
+                    r'const cities = \[.*?\];',
+                    f"const cities = {json.dumps(cities_list, indent=4)};",
+                    content,
+                    flags=re.DOTALL
+                )
+                with open(file_path, "w") as file:
+                    file.write(updated_content)
+        except Exception:
+            pass
+
+        resp = {'success': True, 'id': prop.id, 'appended_row': appended_row}
+        return JsonResponse(resp)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
