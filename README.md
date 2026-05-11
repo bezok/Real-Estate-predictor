@@ -18,3 +18,20 @@ Phase 2: User Input & Frontend Development
 Implementing a frontend interface to allow users to post or add property details they wish to sell.
 Integrating user-submitted data with the web-scraped dataset to improve prediction accuracy.
 Enhancing the web interface with features such as interactive maps and search filters.
+
+
+How to Run
+
+Frontend:
+
+In CLI
+1) cd "<path>\Real-Estate-predictor\App\Frontend\frontend"; npm install
+2) npm --prefix "C:\Projects\Real_Estate\Real-Estate-predictor\App\Frontend\frontend" run dev
+
+Backend:
+
+In CLI
+1) cd  "<path>\Real-Estate-predictor\App\django"
+2) pip install requirements.txt
+3) py manage.py run server
+

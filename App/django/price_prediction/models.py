@@ -6,8 +6,11 @@ class Property(models.Model):
     description = models.TextField()  # Description of the property
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the property
     location = models.CharField(max_length=200)  # Location of the property
-    is_for_sale = models.BooleanField(default=True)  # Indicates if the property is for sale
-    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the property was created
+    is_for_sale = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='property_images/', null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title  # String representation of the property

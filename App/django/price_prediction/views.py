@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
+from django.middleware.csrf import get_token
 import json
 import os
 from django.conf import settings
@@ -112,8 +113,8 @@ def predict_price(request):
         # Train-test split
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         
-        # Model training with Linear Regression
-        # model = LinearRegression()
+        # Model training with Random forest Regressor
+        
         model = RandomForestRegressor(n_estimators=100, random_state=42)
         model.fit(X_train, y_train)
 
@@ -208,7 +209,11 @@ def login_view(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return JsonResponse({'success': True})
+        # ensure CSRF cookie is present on the successful login response
+        resp = JsonResponse({'success': True})
+        token = get_token(request)
+        resp.set_cookie(settings.CSRF_COOKIE_NAME, token)
+        return resp
     else:
         return JsonResponse({'error': 'Invalid credentials'}, status=400) 
 
@@ -237,11 +242,15 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return JsonResponse({'success': True})
+    resp = JsonResponse({'success': True})
+    # remove CSRF and session cookies so client state is fully cleared
+    resp.delete_cookie(settings.CSRF_COOKIE_NAME)
+    resp.delete_cookie(settings.SESSION_COOKIE_NAME)
+    return resp
 
 
 def buy_page(request):
-    properties = Property.objects.filter(is_for_sale=True)  # Fetch properties for sale
+    properties = Property.objects.filter(is_for_sale=True)
     data = []
     for p in properties:
         data.append({
@@ -252,6 +261,9 @@ def buy_page(request):
             'location': p.location,
             'is_for_sale': p.is_for_sale,
             'created_at': p.created_at.isoformat(),
+            'image_url': request.build_absolute_uri(p.image.url) if p.image else None,
+            'lat': float(p.latitude) if p.latitude is not None else None,
+            'lng': float(p.longitude) if p.longitude is not None else None,
         })
     return JsonResponse({'results': data})
 
@@ -444,13 +456,20 @@ def property_list(request):
             'location': p.location,
             'is_for_sale': p.is_for_sale,
             'created_at': p.created_at.isoformat(),
+            'image_url': request.build_absolute_uri(p.image.url) if p.image else None,
+            'lat': float(p.latitude) if p.latitude is not None else None,
+            'lng': float(p.longitude) if p.longitude is not None else None,
         })
     return JsonResponse({'results': data})
 
 @require_http_methods(["GET"])
 def property_search(request):
+    from django.db.models import Q
     q = request.GET.get('q', '')
-    properties = Property.objects.filter(title__icontains=q, is_for_sale=True)
+    properties = Property.objects.filter(
+        Q(title__icontains=q) | Q(location__icontains=q) | Q(description__icontains=q),
+        is_for_sale=True,
+    )
     data = []
     for p in properties:
         data.append({
@@ -461,6 +480,9 @@ def property_search(request):
             'location': p.location,
             'is_for_sale': p.is_for_sale,
             'created_at': p.created_at.isoformat(),
+            'image_url': request.build_absolute_uri(p.image.url) if p.image else None,
+            'lat': float(p.latitude) if p.latitude is not None else None,
+            'lng': float(p.longitude) if p.longitude is not None else None,
         })
     return JsonResponse({'results': data})
 
@@ -477,6 +499,9 @@ def property_detail(request, id):
             'location': p.location,
             'is_for_sale': p.is_for_sale,
             'created_at': p.created_at.isoformat(),
+            'image_url': request.build_absolute_uri(p.image.url) if p.image else None,
+            'lat': float(p.latitude) if p.latitude is not None else None,
+            'lng': float(p.longitude) if p.longitude is not None else None,
         }
         return JsonResponse(data)
     except Property.DoesNotExist:
@@ -486,25 +511,42 @@ def property_detail(request, id):
 @ensure_csrf_cookie
 def create_property(request):
     try:
-        data = json.loads(request.body)
-        title = data.get('title')
-        description = data.get('description', '')
-        price = data.get('price', 0)
-        location = data.get('location', '')
-        is_for_sale = data.get('is_for_sale', True)
+        title = request.POST.get('title')
+        description = request.POST.get('description', '')
+        price = request.POST.get('price', 0)
+        location = request.POST.get('location', '')
+        is_for_sale = request.POST.get('is_for_sale', 'true').lower() != 'false'
 
         # Optional fields sent from frontend
-        furnishing = data.get('furnishing', '')
-        bhk = data.get('bhk', '')
-        property_type = data.get('property_type', '')
+        furnishing = request.POST.get('furnishing', '')
+        bhk = request.POST.get('bhk', '')
+        property_type = request.POST.get('property_type', '')
+
+        raw_lat = request.POST.get('latitude') or None
+        raw_lng = request.POST.get('longitude') or None
+        try:
+            latitude = float(raw_lat) if raw_lat is not None else None
+        except (ValueError, TypeError):
+            latitude = None
+        try:
+            longitude = float(raw_lng) if raw_lng is not None else None
+        except (ValueError, TypeError):
+            longitude = None
 
         prop = Property.objects.create(
             title=title,
             description=description,
             price=price,
             location=location,
-            is_for_sale=is_for_sale
+            is_for_sale=is_for_sale,
+            latitude=latitude,
+            longitude=longitude,
         )
+
+        image = request.FILES.get('image')
+        if image:
+            prop.image = image
+            prop.save()
 
         # Try to append to CSV dataset in the required format
         appended_row = None

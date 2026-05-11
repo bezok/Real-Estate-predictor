@@ -32,6 +32,13 @@ export default function PropertyView() {
   return (
     <Box sx={{ maxWidth: 720, mx: 'auto', mt: 4 }}>
       <Card variant="outlined">
+        {property.image_url && (
+          <img
+            src={property.image_url}
+            alt={property.title}
+            style={{ width: '100%', maxHeight: 320, objectFit: 'cover' }}
+          />
+        )}
         <CardContent>
           <Typography variant="h4">{property.title}</Typography>
           <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 1 }}>{property.location}</Typography>

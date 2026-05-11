@@ -80,6 +80,13 @@ export default function Properties() {
               <Grid item key={p.id} xs={12} sm={6}>
                 {/* YOUR EXISTING CARD – untouched */}
                 <Card variant="outlined">
+                  {p.image_url && (
+                    <img
+                      src={p.image_url}
+                      alt={p.title}
+                      style={{ width: '100%', height: 140, objectFit: 'cover' }}
+                    />
+                  )}
                   <CardContent>
                     <Typography variant="h6">{p.title}</Typography>
                     <Typography variant="body2" color="text.secondary">

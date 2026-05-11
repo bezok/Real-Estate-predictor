@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,6 +8,7 @@ import { AuthContext } from '../contexts/AuthContext';
 export default function Header() {
   const { user, logout } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const publicTabs = [
     { label: 'Login', to: '/login' },
@@ -50,7 +51,7 @@ export default function Header() {
         {user ? (
           <>
             <span style={{ marginRight: 12 }}>Hi, {user.username}</span>
-            <button onClick={logout}>Logout</button>
+            <button onClick={async () => { try { await logout(); } finally { navigate('/'); } }}>Logout</button>
           </>
         ) : null}
       </div>
